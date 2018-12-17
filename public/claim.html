@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Claim Your Account</title>
+</head>
+<body>
+  <h1>Claim your account</h1>
+  <div>
+    Email: <input name="email" /><br>
+    Password: <input type="password" name="password" /><br>
+    Code: <input name="code" /><br>
+    <button id="claim">Claim</button>
+  </div>
+  <div id="response">
+
+  </div>
+  <script type="text/javascript">
+    const $ = (q) => document.querySelector(q);
+
+    $("#claim").onclick = function(){
+      const email = $("[name=email]").value;
+      const password = $("[name=password]").value;
+      const code = $("[name=code]").value;
+
+      fetch('/api/auth/signup', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          code: code
+        })
+      })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        $("#response").textContent = data.message
+      });
+    };
+  </script>
+</body>
+</html>

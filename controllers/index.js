@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const auth = require("./authController");
 const events =  require("./eventsController");
 const slack =  require("./slackController");
+const admin =  require("./adminController");
 
 const router = new express.Router();
 router.use('/api/slack', slack);      // What slack calls to give us events
@@ -13,6 +14,7 @@ parserRouter.use(bodyParser.json());
 parserRouter.use(bodyParser.urlencoded({ extended: false }));
 parserRouter.use('/api/auth', auth);        // Our local auth
 parserRouter.use('/api/events', events);    // Our Database of slack events
+parserRouter.use('/api/admin', admin);      // Our administrator routes
 
 router.use(parserRouter);
 

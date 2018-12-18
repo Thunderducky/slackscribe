@@ -5,8 +5,7 @@ const { SlackEvent } = require("../models");
 
 const router = new express.Router();
 
-
-// TODO: add time restrictions
+// TODO: filter by domain
 router.get("/", passport.authenticate('jwt', { session: false}), (req, res) => {
   // We can access all the slack events we've recorded
   const url_parts = url.parse(req.url, true);
@@ -21,6 +20,7 @@ router.get("/", passport.authenticate('jwt', { session: false}), (req, res) => {
     constraints.ts = constraints.ts || {}
     constraints.ts["$lte"] = +stop;
   }
+
   SlackEvent.find(constraints).then((events) => {
     res.json(events);
   });

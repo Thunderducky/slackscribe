@@ -41,8 +41,6 @@ router.post("/signup", (req, res) => {
 
 });
 
-
-
 router.post("/login", (req, res) => {
   // We will issue them an auth token, which expires in one day
   const unauthorized = message => {

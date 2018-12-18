@@ -7,7 +7,8 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true},
   password: { type: String, required: true },
-  validated: { type: Boolean, required: true, default: false}
+  validated: { type: Boolean, required: true, default: false},
+  isAdmin: {type: Boolean, required: true, default: false}
   // right now we're going to hand validate users
 });
 

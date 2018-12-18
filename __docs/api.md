@@ -1,7 +1,8 @@
 All requests should be sent along with your JWT as a bearer token
 
+Make sure your requests have this header
 `
-authorization: Bearer <Your JWT>
+Authorization: Bearer <Your JWT>
 `
 
 route: GET /api/events

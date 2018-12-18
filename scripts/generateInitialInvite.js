@@ -5,7 +5,7 @@ const moment = require("moment");
 const { Invite, User } = require("../models");
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/slackEvents";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/slackEvents";
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true }).then(() => {
   User.countDocuments().then(userCount => {
     if(userCount === 0){

@@ -15,7 +15,8 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true }).then(() => {
         expires: moment().add(1, "days").format("x"),
         used: false,
         invitee_email: process.env.INITIAL_EMAIL
-      }).then(() => {
+      }).then((dbInvite) => {
+        console.log(dbInvite.code);
         mongoose.connection.close();
       });
     }

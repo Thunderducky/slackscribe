@@ -27,15 +27,20 @@ router.post("/signup", (req, res) => {
         return res.status(401).send("email does not match invite code")
       }
 
-      // we have a matching email, so let's create a user account
+      // We need to catch usernames being taken
       User.create({
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        // Automatically make the starting email an admin
+        isAdmin: req.body.email === process.env.INITIAL_EMAIL
       }).then(user => {
           invite.used = true;
           return invite.save();
       }).then(() => {
         res.json({success: true, message: "user account created"})
+      }).catch(errors => {
+        console.log(errors);
+        res.status(500).send("something went wrong");
       })
     });
 
@@ -68,7 +73,7 @@ router.post("/login", (req, res) => {
           _id: user._id                              // encode user id
         }, process.env.JWT_SECRET,
         {
-          expiresIn: '23h' // 23 hours in seconds
+          expiresIn: '23h'
         });
         return res.json({success: true, message: "JWT " + token});
       } else {

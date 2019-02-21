@@ -20,6 +20,12 @@
   <script type="text/javascript">
     const $ = (q) => document.querySelector(q);
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if(code){
+      $("#code").value = code;
+    }
+
     $("#claim").onclick = function(){
       const email = $("[name=email]").value;
       const password = $("[name=password]").value;

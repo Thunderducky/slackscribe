@@ -14,7 +14,9 @@ const passportOpts = {
 passport.use(new JwtStrategy(
     passportOpts,
     (jwt_payload, done) => {
+      console.log(jwt_payload);
       User.findOne({_id: jwt_payload._id}, (err, user) => {
+        console.log(user);
         if(err){ return done(err, false); } // if we have a problem remove it
         if(user && user.validated){
           done(null, user);

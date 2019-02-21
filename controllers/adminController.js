@@ -10,6 +10,7 @@ const router = new express.Router();
 
 // All these routes need to be authorized
 const isAdminUser = (req, res, next) => {
+  console.log("test");
   if(req.user.isAdmin){
     return next();
   } else {
@@ -36,7 +37,7 @@ router.get("/invite/unclaimed", (req, res) => {
   })
 })
 
-// users are inusred to be admin users
+// users are insured to be admin users
 router.post("/invite", (req, res) => {
   const { email } = req.body;
   // TODO
@@ -54,7 +55,7 @@ router.delete('/invite/:code', (req, res) => {
   Invite.deleteOne({code: req.params.code}, function(err){
     res.status(200).end();
   })
-})
+});
 
 
 module.exports = router;

@@ -23,3 +23,6 @@ Would search for slack events between
 - Sat Dec 15 2018 10:43:05 GMT-0600
 - Sat Dec 15 2018 10:43:05 GMT-0600
 
+### Example Consumer Apps
+[scribe-link-grabber](https://github.com/Thunderducky/scribe-link-grabber)
+

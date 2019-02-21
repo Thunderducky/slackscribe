@@ -31,6 +31,17 @@ const makeAPI = () => {
       body: JSON.stringify(body)
     }).then(r => r.json());
   }
+  const putAuthed = (url, body) => {
+    return fetch(url,
+      {
+      method: "PUT",
+      headers: {
+        "Content-Type":"application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    }).then(r => r.json());
+  }
 
   // RETURN AN OBJECT WITH ALL THE RESULTS
   return {
@@ -74,6 +85,17 @@ const makeAPI = () => {
           console.log(results);
           return Promise.resolve(results);
       });
+    },
+
+    getUsers: () => {
+      return getAuthed('/api/admin/user');
+    },
+
+    validateUser: code => {
+      return putAuthed(`/api/admin/user/${code}/validate`, {})
+    },
+    invalidateUser: code => {
+      return putAuthed(`/api/admin/user/${code}/invalidate`, {})
     }
   }
 }
@@ -102,6 +124,46 @@ const displayNewInvite = invite => {
   `${window.location.origin}/claim.html?code=${invite.code}`
 }
 
+const displayUsers = users => {
+  const userArea = $("#user-container");
+  empty(userArea);
+  users.forEach(user => {
+    const userHTML = make("div");
+    const userInfo = make("span");
+    let isValid = user.validated;
+    userInfo.textContent =
+    `${user.email}
+    ${user.isAdmin ? " - admin " : ""}
+    ${isValid ? " - validated " : " - not validated "}
+    `;
+    userHTML.append(userInfo);
+    // all of this is closured
+    if(!user.isAdmin){
+      const validButton = make("button");
+      validButton.textContent = isValid ? "invalidate" : "validate";
+      userHTML.append(validButton);
+      // TODO: improve this
+      validButton.onclick = () => {
+        if(isValid){
+          isValid = false;
+          API.invalidateUser(user._id);
+        } else {
+          isValid = true;
+          API.validateUser(user._id);
+        }
+        validButton.textContent = isValid ? "invalidate" : "validate";
+        userInfo.textContent =
+        `${user.email}
+        ${user.isAdmin ? " - admin " : ""}
+        ${isValid ? " - validated " : " - not validated "}
+        `;
+      };
+    }
+
+    userArea.append(userHTML);
+  });
+};
+
 $("#sign-in").onclick = () => {
   const email = $("#email").value;
   const password = $("#password").value;
@@ -113,6 +175,7 @@ $("#sign-in").onclick = () => {
       show($("#active-section"));
       $("#loggedInAs").textContent = email;
       API.getInvites().then(results => displayInvites(results));
+      API.getUsers().then(results => displayUsers(results));
   });
 }
 $("#logout").onclick = () => {

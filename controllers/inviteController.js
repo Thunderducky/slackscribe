@@ -21,24 +21,24 @@ const isAdminUser = (req, res, next) => {
 router.use(passport.authenticate('jwt', { session: false}))
 router.use(isAdminUser);
 
-router.get("/invite/all", (req, res) => {
+router.get("/all", (req, res) => {
   Invite.find({}).then(results => {
     res.json(results);
   })
 })
-router.get("/invite/claimed", (req, res) => {
+router.get("/claimed", (req, res) => {
   Invite.find({ used: true}).then(results => {
     res.json(results);
   })
 })
-router.get("/invite/unclaimed", (req, res) => {
+router.get("/unclaimed", (req, res) => {
   Invite.find({ used: false}).then(results => {
     res.json(results);
   })
 })
 
 // users are insured to be admin users
-router.post("/invite", (req, res) => {
+router.post("/", (req, res) => {
   const { email } = req.body;
   // TODO
   Invite.create({
@@ -51,7 +51,7 @@ router.post("/invite", (req, res) => {
   });
 });
 
-router.delete('/invite/:code', (req, res) => {
+router.delete('/:code', (req, res) => {
   Invite.deleteOne({code: req.params.code}, function(err){
     res.status(200).end();
   })

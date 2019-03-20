@@ -9,7 +9,7 @@ const extractLinks = (source) => {
   // source = source.toLowerCase();
   // The links/messages from slack ar always in the format <hyperlink | name >
   // this function extracts those pieces as best it can
-  source.replace(/\<http(.*?)\>/g, function(_, match){
+  source.replace(/\<http(.*?)\>/gi, function(_, match){
     const matches = ("http" + match).split("|");
     const myUrl = url.parse(matches[0]);
     const result = {
